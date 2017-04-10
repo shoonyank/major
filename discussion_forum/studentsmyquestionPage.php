@@ -4,7 +4,7 @@ $qid=$_GET["q"];
 $server = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'testportal2';
+$database = 'testportonlineexamportalal2';
 $con=new mysqli($server,$username,$password,$database);
 
 if($con->connect_error)

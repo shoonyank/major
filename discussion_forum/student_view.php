@@ -1,6 +1,6 @@
 <?php
 session_start();
-$server     = 'localhost';
+$server = 'localhost';
 $username = 'root';
 $password = '';
 $database = 'onlineexamportal';
@@ -21,7 +21,7 @@ if( isset($_GET["submit"])){
 else{
   $_SESSION["counter"]=1;
 }
-$_SESSION["limit"];
+
 $query0="Select max(qid) from student_questions";
 $result0 = $con->query($query0);
 if ($result0->num_rows > 0) {    
@@ -31,6 +31,7 @@ if ($result0->num_rows > 0) {
 } else {
     echo "0 results";
 }
+
 $_SESSION["lastlimit"]=$_SESSION["limit"]-5*$_SESSION["counter"];
 $question=array();
 $posted_by_id=array();
@@ -171,7 +172,7 @@ $qidtoshow=array();
             <li><a href="get_results.php" style="color: black;">Get Results</a></li>
           </ul>
         </li>
-        <li><a href="database/logout.php" style="color: white;">Logout</a></li>
+        <li><a href="../database/logout.php" style="color: white;">Logout</a></li>
       </ul>
     </div>
   </div>

@@ -2,7 +2,7 @@
 $server     = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'testportal2';
+$database = 'onlineexamportal';
 $con=new mysqli($server,$username,$password,$database);
 
 if($con->connect_error)

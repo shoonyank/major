@@ -1,10 +1,10 @@
 <?php
 session_start();
 //establish connection
-$server     = 'mysql.hostinger.in';
-$username = 'u342164714_porta';
-$password = 'platicane';
-$database = 'u342164714_porta';
+$server     = 'localhost';
+$username = 'root';
+$password = '';
+$database = 'onlineexamportal';
 $con=new mysqli($server,$username,$password,$database);
 if($con->connect_error)
 {
