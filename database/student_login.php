@@ -20,7 +20,7 @@ if (mysqli_num_rows($result) > 0) {
     $result->free();
 }
 else{
-    include 'Login_Error.php';
+    include '../Login_Error.html';
 }
 
 ?>
