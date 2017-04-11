@@ -1,11 +1,6 @@
 <?php
 session_start();
-$qid=$_GET["q"];
-$server = 'localhost';
-$username = 'root';
-$password = '';
-$database = 'testportonlineexamportalal2';
-$con=new mysqli($server,$username,$password,$database);
+include 'dbconnect.php';
 
 if($con->connect_error)
 {

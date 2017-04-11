@@ -1,15 +1,7 @@
 <?php
 session_start();
 //establish connection
-$server     = 'localhost';
-$username = 'root';
-$password = '';
-$database = 'onlineexamportal';
-$con=new mysqli($server,$username,$password,$database);
-if($con->connect_error)
-{
-  echo "Error: could not establish database connection";
-}
+include 'dbconnect.php';
 //connection established
 //check session
 if(isset($_SESSION["sid"])){

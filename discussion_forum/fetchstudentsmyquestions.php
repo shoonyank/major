@@ -1,9 +1,5 @@
 <?php
-$server     = 'localhost';
-$username = 'root';
-$password = '';
-$database = 'onlineexamportal';
-$con=new mysqli($server,$username,$password,$database);
+include 'dbconnect.php';
 
 if($con->connect_error)
 {
