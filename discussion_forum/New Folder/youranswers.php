@@ -1,60 +1,60 @@
 <?php
 session_start();
+//establish connection
 include 'dbconnect.php';
-
-if($con->connect_error)
-{
-  echo "Error: could not establish database connection";
-}
+//connection established
+//check session
 if(isset($_SESSION["sid"])){
 }
 else{
   exit("Please Sign In to continue");
 }
+//session checked
+//get name of student
+$student_name;
+$querya="Select name from student_details where sid=".$_SESSION["sid"];
+$resulta = $con->query($querya);
+if ($resulta->num_rows > 0) {    
+    while($rowa = $resulta->fetch_assoc()) {
+      $student_name=$rowa["name"];
+    }
+}
+//got student's name
+
+//set counter value
 if( isset($_GET["submit"])){
-  $_SESSION["counter"]++;
+  $_SESSION["myanscounter"]++;
 }
 else{
-  $_SESSION["counter"]=1;
+  $_SESSION["myanscounter"]=1;
 }
-
-$query0="Select max(qid) from student_questions";
+//counter value set
+//set high limit
+$_SESSION["myanslimit"];
+$query0="Select com_id from student_comments where posted_by_id=".$_SESSION["sid"]." order by posted_by_id limit 1";
 $result0 = $con->query($query0);
 if ($result0->num_rows > 0) {    
     while($row0 = $result0->fetch_assoc()) {
-        $_SESSION["limit"]=$row0["max(qid)"];
+        $_SESSION["myanslimit"]=$row0["com_id"];
     }
 } else {
-    echo "No questions to show";
+    echo "0 results";
 }
-
-$_SESSION["lastlimit"]=$_SESSION["limit"]-5*$_SESSION["counter"];
-$question=array();
-$posted_by_id=array();
-$id_of=array();
-$timestamp=array();
-$prime_tag=array();
-$qid= array();
-$query="Select qid,question, posted_by_id,id_of, timestamp, prime_tag from questions where shown_to in ('student','all') and qid between ".$_SESSION["lastlimit"]." and ".$_SESSION["limit"]." order by qid desc";
+//high limit set
+//set low limit
+$_SESSION["myanslastlimit"]=$_SESSION["myanslimit"]-5*$_SESSION["myanscounter"];
+//low limit set
+//set arrays of questions timestamps prime_tags and qid
+$comment=array();
+$query="Select com_id from student_comments where posted_by_id=".$_SESSION["sid"]." and com_id between ".$_SESSION["myanslastlimit"]." and ".$_SESSION["myanslimit"]." order by com_id desc";
 $result = $con->query($query);
-if ($result->num_rows > 0) {    
+if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-      array_push($qid, $row["qid"]);
-        array_push($question, $row["question"]);
-        array_push($posted_by_id, $row["posted_by_id"]);
-        array_push($timestamp, $row["timestamp"]);
-        array_push($prime_tag, $row["prime_tag"]);
+      array_push($comid, $row["com_id"]);
     }
 }
+//arrays of questions timestamps prime_tags and qid set
 
-$qidtoshow=array();
-    $queryregulator="Select qid from student_questions where shown_to in ('student','all')";
-    $resultregulator = $con->query($queryregulator);
-    if ($resultregulator->num_rows > 0) {    
-        while($rowregulator = $resultregulator->fetch_assoc()) {
-           array_push($qidtoshow,$rowregulator["qid"]);
-        }
-    }
 
 ?>
 <!DOCTYPE html>
@@ -90,61 +90,44 @@ $qidtoshow=array();
     }
   }
   </style>
-  <script type="text/javascript">
-  <?php
-  //studentbar
-    $qidnum=array();
-    $queryregulator="Select qid from student_questions where shown_to in ('student','all')";
-    $resultregulator = $con->query($queryregulator);
-    if ($resultregulator->num_rows > 0) {    
-        while($rowregulator = $resultregulator->fetch_assoc()) {
-          array_push($qidnum, $rowregulator["qid"]);
-        }
-    }
-    //student bar
-  ?>
+  <script type="text/javascript">  
   //student bar
-  var qarray=<?php echo json_encode($qidnum)?>;
-  qarray=qarray.reverse();
+  var comarray=<?php echo json_encode($comid)?>;
   var k=0;
-  var questioncount=qarray[k];
-  var lastelement=qarray[qarray.length-1];
+  var comcount=comarray[k];
+  var lastelement=comarray[comarray.length-1];
   //student bar
-    function getquestion(){
+    function getquest(){
+      console.log("quest started");
+      console.log(questioncount);
+      console.log(lastelement);
       if(questioncount>=lastelement){
+        console.log("in first if");
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 data=JSON.parse(this.responseText);
+                console.log("in the if statement");
                 document.getElementById("prime_tag").innerHTML = data.prime_tag;
                 document.getElementById("mainquestion").innerHTML = data.question;
                 document.getElementById("maintimestamp").innerHTML = data.timestamp;
-                document.getElementById("mainstudent").innerHTML = data.posted_by;
+                document.getElementById("mainstudent").value = data.posted_by_id;
+                document.getElementById("maincomment").value = data.comment;
             }
         };
-        xmlhttp.open("GET", "./fetchquestionsfromstudent.php?q=" + questioncount, true);
+        xmlhttp.open("GET", "fetchstudentsmyanswers.php?q=" + comcount, true);
         xmlhttp.send();
         k++;
-        questioncount=qarray[k];
+        comcount=comarray[k];
       }
-    }
-      function gotoquespage(){
-        var key=k-1;
-        window.location.href = "./studentquestionPage.php?q="+qarray[key];
-      }
-    function load_your_questions(){
-      document.getElementById("main_content").innerHTML="load_your_questions";
-    }
-    function load_your_answers(){
-      document.getElementById("main_content").innerHTML="load_your_answers";
     }
   </script>
 </head>
-<body onload="getquestion()">
+<body onload="getquest()">
         <!-- Fixed navbar -->
 <?php
   include 'navbar.php';
-?>
+?>s
 <!--Navbar-->
 
 <!--Vertical Navbar-->
@@ -164,22 +147,30 @@ $qidtoshow=array();
         </div>
         <div class="navbar-collapse collapse sidebar-navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="student_view.php">New Student Questions</a></li>
+            <li><a href="student_view.php">New Student Questions</a></li>
             <li><a href="student_fac_question_view.php">New Faculty Questions</a></li>
-            <li><a href="yourquestions.php">Your Questions</a></li>
+            <li class="active"><a href="yourquestions.php">Your Questions</a></li>
             <li><a href="#">Your answers</a></li>
             <li><a href="#">Total Questions <span class="badge">
-            <?php
-        $total;
-        $query="Select count(qid) from questions";
-        $result = $con->query($query);
-        if ($result->num_rows > 0) {    
-            while($row = $result->fetch_assoc()) {
-                $total=$row["count(qid)"];
-            }
-        }
-        echo $total;
-            ?>              
+            <?php             
+$total;
+$query="Select count(qid) from student_questions";
+$result = $con->query($query);
+if ($result->num_rows > 0) {    
+    while($row = $result->fetch_assoc()) {
+        $total=$row["count(qid)"];
+    }
+}
+$query1="Select count(qid) from faculty_questions";
+$result1 = $con->query($query1);
+if ($result1->num_rows > 0) {    
+    while($row1 = $result1->fetch_assoc()) {
+        $total=$total+$row1["count(qid)"];
+    }
+}
+echo $total;
+            ?>
+              
             </span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -191,15 +182,17 @@ $qidtoshow=array();
           <div class='panel-heading'>Related to:<div id="prime_tag"></div></div>
           <div class='panel-body'>Question:<div id="mainquestion"></div></div>
           <div class='panel-footer'>Posted by:<div id="mainstudent"></div> On: <div id="maintimestamp"></div>
-          <button onclick="gotoquespage()">View the question in detail</button>
           </div>
         </div>
-        <button onclick="getquestion()">Next</button>
+        <div class='panel panel-default'>
+          <div class='panel-body'>Your Answer:<div id="maincomment"></div></div>
+          </div>
+        </div>
+        <button onclick="getquest()">Next</button>
     </div>
 </div>
 </div>
 <!--Vertical Navbar-->
 <!--button onclick="getquestion()">Click me!</button-->
-<a href="lab/index.php">Go To Lab</a>
 </body>
 </html>

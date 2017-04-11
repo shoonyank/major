@@ -1,0 +1,3 @@
+Error code starts with # like #code and its meaning is right next to it in /* Meaning */
+#5204:
+//Error in discussion_forum/insertquestion.php

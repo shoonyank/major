@@ -2,8 +2,25 @@
 session_start();
 //establish connection
 include 'dbconnect.php';
+
+if($con->connect_error)
+{
+  echo "Error: could not establish database connection";
+}
 //connection established
 //check session
+if (isset($_POST["newquestion"])) {
+  $newquestion="Insert into student_questions(question,posted_by_id,prime_tag,shown_to) values(".$_POST["question"].",".$_SESSION["sid"].",".$_POST["prime_tag"].",".$_POST["shown_to"].")";
+  if ($con->query($newquestion) === TRUE) {
+    
+  } else {
+      echo "question : ".$_POST["question"];
+      echo "Posted By: ".$_SESSION["sid"];
+      echo "Related to : ".$_POST["prime_tag"];
+      echo "Shown to : ".$_POST["shown_to"];
+      echo "Try again";
+  }
+}
 if(isset($_SESSION["sid"])){
 }
 else{
@@ -23,34 +40,40 @@ if ($resulta->num_rows > 0) {
 
 //set counter value
 if( isset($_GET["submit"])){
-  $_SESSION["myanscounter"]++;
+  $_SESSION["myqcounter"]++;
 }
 else{
-  $_SESSION["myanscounter"]=1;
+  $_SESSION["myqcounter"]=1;
 }
 //counter value set
 //set high limit
-$_SESSION["myanslimit"];
-$query0="Select com_id from student_comments where posted_by_id=".$_SESSION["sid"]." order by posted_by_id limit 1";
+$_SESSION["myqlimit"];
+$query0="Select max(qid) from student_questions";
 $result0 = $con->query($query0);
 if ($result0->num_rows > 0) {    
     while($row0 = $result0->fetch_assoc()) {
-        $_SESSION["myanslimit"]=$row0["com_id"];
+        $_SESSION["myqlimit"]=$row0["max(qid)"];
     }
 } else {
     echo "0 results";
 }
 //high limit set
 //set low limit
-$_SESSION["myanslastlimit"]=$_SESSION["myanslimit"]-5*$_SESSION["myanscounter"];
+$_SESSION["myqlastlimit"]=$_SESSION["myqlimit"]-5*$_SESSION["myqcounter"];
 //low limit set
 //set arrays of questions timestamps prime_tags and qid
-$comment=array();
-$query="Select com_id from student_comments where posted_by_id=".$_SESSION["sid"]." and com_id between ".$_SESSION["myanslastlimit"]." and ".$_SESSION["myanslimit"]." order by com_id desc";
+$question=array();
+$timestamp=array();
+$prime_tag=array();
+$qid= array();
+$query="Select qid,question, timestamp, prime_tag from student_questions where posted_by_id=".$_SESSION["sid"]." and qid between ".$_SESSION["myqlastlimit"]." and ".$_SESSION["myqlimit"]." order by qid desc";
 $result = $con->query($query);
-if ($result->num_rows > 0) {
+if ($result->num_rows > 0) {    
     while($row = $result->fetch_assoc()) {
-      array_push($comid, $row["com_id"]);
+      array_push($qid, $row["qid"]);
+      array_push($question, $row["question"]);      
+      array_push($timestamp, $row["timestamp"]);
+      array_push($prime_tag, $row["prime_tag"]);
     }
 }
 //arrays of questions timestamps prime_tags and qid set
@@ -92,10 +115,10 @@ if ($result->num_rows > 0) {
   </style>
   <script type="text/javascript">  
   //student bar
-  var comarray=<?php echo json_encode($comid)?>;
+  var qarray=<?php echo json_encode($qid)?>;
   var k=0;
-  var comcount=comarray[k];
-  var lastelement=comarray[comarray.length-1];
+  var questioncount=qarray[k];
+  var lastelement=qarray[qarray.length-1];
   //student bar
     function getquest(){
       console.log("quest started");
@@ -111,51 +134,26 @@ if ($result->num_rows > 0) {
                 document.getElementById("prime_tag").innerHTML = data.prime_tag;
                 document.getElementById("mainquestion").innerHTML = data.question;
                 document.getElementById("maintimestamp").innerHTML = data.timestamp;
-                document.getElementById("mainstudent").value = data.posted_by_id;
-                document.getElementById("maincomment").value = data.comment;
+                document.getElementById("mainstudent").value = <?php echo $student_name;?>;
             }
         };
-        xmlhttp.open("GET", "fetchstudentsmyanswers.php?q=" + comcount, true);
+        xmlhttp.open("GET", "fetchstudentsmyquestions.php?q=" + questioncount, true);
         xmlhttp.send();
         k++;
-        comcount=comarray[k];
+        questioncount=qarray[k];
       }
     }
+      function gotoquespage(){
+        var key=k-1;
+        window.location.href = "./studentsmyquestionPage.php?q="+qarray[key];
+      }
   </script>
 </head>
 <body onload="getquest()">
         <!-- Fixed navbar -->
-<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #335571;">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#" style="color: white;">WebCods</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="dashboard.php">Home</a></li>
-        <li><a href="profile.php" style="color: white;">Profile</a></li>        
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: white;">Academics<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="submit_assignments.php" style="color: black;">Submit Assignments</a></li>
-            <li><a href="noticeboard.php" style="color: black;">NoticeBoard</a></li>
-            <li role="separator" class="divider"></li>
-            <li class="dropdown-header" style="color: black;">Give Mock Tests</li>
-            <li><a href="mock_test.php" style="color: black;">Do a Mock test</a></li>
-            <li><a href="get_results.php" style="color: black;">Get Results</a></li>
-          </ul>
-        </li>
-        <li><a href="database/logout.php" style="color: white;">Logout</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<?php
+  include 'navbar.php';
+?>
 <!--Navbar-->
 
 <!--Vertical Navbar-->
@@ -189,7 +187,7 @@ if ($result->num_rows > 0) {
         $total=$row["count(qid)"];
     }
 }
-$query1="Select count(qid) from faculty_questions";
+$query1="Select count(qid) from student_questions";
 $result1 = $con->query($query1);
 if ($result1->num_rows > 0) {    
     while($row1 = $result1->fetch_assoc()) {
@@ -212,15 +210,19 @@ echo $total;
           <div class='panel-footer'>Posted by:<div id="mainstudent"></div> On: <div id="maintimestamp"></div>
           </div>
         </div>
-        <div class='panel panel-default'>
-          <div class='panel-body'>Your Answer:<div id="maincomment"></div></div>
-          </div>
-        </div>
         <button onclick="getquest()">Next</button>
     </div>
 </div>
 </div>
 <!--Vertical Navbar-->
-<!--button onclick="getquestion()">Click me!</button-->
+<!--form for new question-->
+<div><form method='post'><input type='text' name='question' placeholder='Your new question'><br><input type="text" name="prime_tag" placeholder="Related to Topic?"><br><select name="shown_to">
+  <option value="faculty">Only Faculty</option>
+  <option value="students">Only Students</option>
+  <option value="all"> Everyone</option>
+</select>
+<br>
+<input type='submit' name='newquestion' value='Submit'><br></form></div>
+<!--form for new question ends-->
 </body>
 </html>

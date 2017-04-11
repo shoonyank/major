@@ -1,7 +1,7 @@
 <?php
 function faculty_go(){
-	header('Location: http://localhost/Online%20Exam%20Portal/faculty_page.php');
-	exit;
+    header('Location: http://localhost/Major%20Project/Online%20Exam%20Portal/faculty_page.php');
+    exit;
 }
 include 'dbconnect.php';
 $query="Select fid,name from faculty where email='".$_POST['email']."' and password='".$_POST['password']."'";
@@ -15,10 +15,9 @@ if (mysqli_num_rows($result) > 0) {
     }
     /* free result set */
     $result->free();
+    faculty_go();
 }
 else{
-    include 'Login_Error.php';
+    include '../Login_Error.html';
 }
-faculty_go();
-
 ?>

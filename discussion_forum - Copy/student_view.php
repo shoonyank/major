@@ -17,8 +17,8 @@ if( isset($_GET["submit"])){
 else{
   $_SESSION["counter"]=1;
 }
-$_SESSION["limit"];
-$query0="Select max(qid) from faculty_questions";
+
+$query0="Select max(qid) from student_questions";
 $result0 = $con->query($query0);
 if ($result0->num_rows > 0) {    
     while($row0 = $result0->fetch_assoc()) {
@@ -27,14 +27,15 @@ if ($result0->num_rows > 0) {
 } else {
     echo "0 results";
 }
+
 $_SESSION["lastlimit"]=$_SESSION["limit"]-5*$_SESSION["counter"];
 $question=array();
 $posted_by_id=array();
 $timestamp=array();
 $prime_tag=array();
 $qid= array();
-$faculty=array();
-$query="Select qid,question, posted_by_id, timestamp, prime_tag from faculty_questions where shown_to in ('student','all') and qid between ".$_SESSION["lastlimit"]." and ".$_SESSION["limit"]." order by qid desc";
+$student=array();
+$query="Select qid,question, posted_by_id, timestamp, prime_tag from student_questions where shown_to in ('student','all') and qid between ".$_SESSION["lastlimit"]." and ".$_SESSION["limit"]." order by qid desc";
 $result = $con->query($query);
 if ($result->num_rows > 0) {    
     while($row = $result->fetch_assoc()) {
@@ -47,7 +48,7 @@ if ($result->num_rows > 0) {
 }
 
 $qidtoshow=array();
-    $queryregulator="Select qid from faculty_questions where shown_to in ('student','all')";
+    $queryregulator="Select qid from student_questions where shown_to in ('student','all')";
     $resultregulator = $con->query($queryregulator);
     if ($resultregulator->num_rows > 0) {    
         while($rowregulator = $resultregulator->fetch_assoc()) {
@@ -91,24 +92,24 @@ $qidtoshow=array();
   </style>
   <script type="text/javascript">
   <?php
-  //facultybar
+  //studentbar
     $qidnum=array();
-    $queryregulator="Select qid from faculty_questions where shown_to in ('student','all')";
+    $queryregulator="Select qid from student_questions where shown_to in ('student','all')";
     $resultregulator = $con->query($queryregulator);
     if ($resultregulator->num_rows > 0) {    
         while($rowregulator = $resultregulator->fetch_assoc()) {
           array_push($qidnum, $rowregulator["qid"]);
         }
     }
-    //faculty bar
+    //student bar
   ?>
-  //faculty bar
+  //student bar
   var qarray=<?php echo json_encode($qidnum)?>;
   qarray=qarray.reverse();
   var k=0;
   var questioncount=qarray[k];
   var lastelement=qarray[qarray.length-1];
-  //faculty bar
+  //student bar
     function getquestion(){
       if(questioncount>=lastelement){
         var xmlhttp = new XMLHttpRequest();
@@ -118,10 +119,10 @@ $qidtoshow=array();
                 document.getElementById("prime_tag").innerHTML = data.prime_tag;
                 document.getElementById("mainquestion").innerHTML = data.question;
                 document.getElementById("maintimestamp").innerHTML = data.timestamp;
-                document.getElementById("mainfaculty").innerHTML = data.posted_by;
+                document.getElementById("mainstudent").innerHTML = data.posted_by;
             }
         };
-        xmlhttp.open("GET", "./fetchquestionsfromfaculty.php?q=" + questioncount, true);
+        xmlhttp.open("GET", "./fetchquestionsfromstudent.php?q=" + questioncount, true);
         xmlhttp.send();
         k++;
         questioncount=qarray[k];
@@ -129,7 +130,7 @@ $qidtoshow=array();
     }
       function gotoquespage(){
         var key=k-1;
-        window.location.href = "./facultyquestionPage.php?q="+qarray[key];
+        window.location.href = "./studentquestionPage.php?q="+qarray[key];
       }
     function load_your_questions(){
       document.getElementById("main_content").innerHTML="load_your_questions";
@@ -141,37 +142,9 @@ $qidtoshow=array();
 </head>
 <body onload="getquestion()">
         <!-- Fixed navbar -->
-<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #335571;">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#" style="color: white;">WebCods</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="dashboard.php">Home</a></li>
-        <li><a href="profile.php" style="color: white;">Profile</a></li>        
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: white;">Academics<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="submit_assignments.php" style="color: black;">Submit Assignments</a></li>
-            <li><a href="noticeboard.php" style="color: black;">NoticeBoard</a></li>
-            <li role="separator" class="divider"></li>
-            <li class="dropdown-header" style="color: black;">Give Mock Tests</li>
-            <li><a href="mock_test.php" style="color: black;">Do a Mock test</a></li>
-            <li><a href="get_results.php" style="color: black;">Get Results</a></li>
-          </ul>
-        </li>
-        <li><a href="database/logout.php" style="color: white;">Logout</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<?php
+  include 'navbar.php';
+?>
 <!--Navbar-->
 
 <!--Vertical Navbar-->
@@ -191,30 +164,29 @@ $qidtoshow=array();
         </div>
         <div class="navbar-collapse collapse sidebar-navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="student_view.php">New Student Questions</a></li>
-            <li class="active"><a href="student_fac_question_view.php">New Faculty Questions</a></li>
-            <li><a href="#">Your Questions</a></li>
+            <li class="active"><a href="student_view.php">New Student Questions</a></li>
+            <li><a href="student_fac_question_view.php">New Faculty Questions</a></li>
+            <li><a href="yourquestions.php">Your Questions</a></li>
             <li><a href="#">Your answers</a></li>
             <li><a href="#">Total Questions <span class="badge">
-            <?php             
-$total;
-$query="Select count(qid) from student_questions";
-$result = $con->query($query);
-if ($result->num_rows > 0) {    
-    while($row = $result->fetch_assoc()) {
-        $total=$row["count(qid)"];
-    }
-}
-$query1="Select count(qid) from faculty_questions";
-$result1 = $con->query($query1);
-if ($result1->num_rows > 0) {    
-    while($row1 = $result1->fetch_assoc()) {
-        $total=$total+$row1["count(qid)"];
-    }
-}
-echo $total;
-            ?>
-              
+            <?php
+        $total;
+        $query="Select count(qid) from student_questions";
+        $result = $con->query($query);
+        if ($result->num_rows > 0) {    
+            while($row = $result->fetch_assoc()) {
+                $total=$row["count(qid)"];
+            }
+        }
+        $query1="Select count(qid) from faculty_questions";
+        $result1 = $con->query($query1);
+        if ($result1->num_rows > 0) {    
+            while($row1 = $result1->fetch_assoc()) {
+                $total=$total+$row1["count(qid)"];
+            }
+        }
+        echo $total;
+            ?>              
             </span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -225,7 +197,7 @@ echo $total;
       <div class='panel panel-primary'>
           <div class='panel-heading'>Related to:<div id="prime_tag"></div></div>
           <div class='panel-body'>Question:<div id="mainquestion"></div></div>
-          <div class='panel-footer'>Posted by:<div id="mainfaculty"></div> On: <div id="maintimestamp"></div>
+          <div class='panel-footer'>Posted by:<div id="mainstudent"></div> On: <div id="maintimestamp"></div>
           <button onclick="gotoquespage()">View the question in detail</button>
           </div>
         </div>
