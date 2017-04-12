@@ -94,7 +94,7 @@ $qidtoshow=array();
   <?php
   //studentbar
     $qidnum=array();
-    $queryregulator="Select qid from student_questions where shown_to in ('student','all')";
+    $queryregulator="Select qid from questions where shown_to in ('student','all')";
     $resultregulator = $con->query($queryregulator);
     if ($resultregulator->num_rows > 0) {    
         while($rowregulator = $resultregulator->fetch_assoc()) {
