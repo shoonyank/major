@@ -13,7 +13,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <li class="active"><a href="dashboard.php">Home</a></li>
-        <li><a href="#" style="color: white;">Profile</a></li>
+        <li><a href="profile.php" style="color: white;">Profile</a></li>
         <li><a href="./discussion_forum/student_view.php" style="color: white;">Test Forum</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: white;">Academics<span class="caret"></span></a>
