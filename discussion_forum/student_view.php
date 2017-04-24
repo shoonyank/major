@@ -154,18 +154,18 @@ $totalpages=getpages();
         <div class="navbar-collapse collapse sidebar-navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="student_view.php">New Questions</a></li>
-            <li><a href="yourquestions.php">Submit a question</a></li>
+            <li><a href="yourquestion.php">Submit a question</a></li>
             <li><a href="#">Total Questions <span class="badge">
             <?php
-        $total;
-        $query="Select count(qid) from questions where shown_to='student'";
-        $result = $con->query($query);
-        if ($result->num_rows > 0) {    
-            while($row = $result->fetch_assoc()) {
-                $total=$row["count(qid)"];
-            }
-        }
-        echo $total;
+              $total;
+              $query="Select count(qid) from questions where shown_to='student'";
+              $result = $con->query($query);
+              if ($result->num_rows > 0) {    
+                  while($row = $result->fetch_assoc()) {
+                      $total=$row["count(qid)"];
+                  }
+              }
+              echo $total;
             ?>              
             </span></a></li>
           </ul>
@@ -231,12 +231,12 @@ $totalpages=getpages();
 </div>
 <!--Vertical Navbar-->
 <!--Go to page-->
-<ul class="pagination">
-<?php
-for ($i=1; $i <= $totalpages; $i++) { 
-  echo "<li><a href='#' onclick='showquestion(".$i.")'>".$i."</a></li>";
-}
-?>
-</ul>
-</body>
+    <ul class="pagination">
+      <?php
+      for ($i=1; $i <= $totalpages; $i++) { 
+        echo "<li><a href='#' onclick='showquestion(".$i.")'>".$i."</a></li>";
+      }
+      ?>
+    </ul>
+  </body>
 </html>

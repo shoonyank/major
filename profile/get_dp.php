@@ -15,7 +15,7 @@ function get_dp($table,$id,$id_name){
     	    $img=$row["image"];
     	}
 	}
-	echo "img/profile_pics/".$img;
+	echo "profile/img/".$img;
 }
 if($profile_of=="Student"){
 	$table="student_details";
