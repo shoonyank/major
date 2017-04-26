@@ -6,4 +6,7 @@ Error code starts with # like #code and its meaning is right next to it in /* Me
 //Error in discussion_forum/lab/get_qid.php
 
 #1112
-//Error in profile/dp_upload;
+//Error in profile/dp_upload
+
+#1345
+//Error in assignment/faculty_assignment_upload.php

@@ -18,7 +18,7 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: white;">Academics<span class="caret"></span></a>
           <ul class="dropdown-menu">
-          	<li><a href="#" style="color: black;">Submit Assignments</a></li>
+          	<li><a href="#" style="color: black;">Post New Assignment</a></li>
             <li><a href="#" style="color: black;">NoticeBoard</a></li>
             <li role="separator" class="divider"></li>
             <li class="dropdown-header" style="color: black;">Give Mock Tests</li>

@@ -2,7 +2,7 @@
 session_start();
 
 function getpassword(){
-  $server     = 'mysql.hostinger.in';
+  $server   = 'mysql.hostinger.in';
   $username = 'u342164714_porta';
   $password = 'platicane';
   $database = 'u342164714_porta';
