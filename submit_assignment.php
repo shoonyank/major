@@ -28,10 +28,10 @@ and open the template in the editor.
     <body>
         <!-- Fixed navbar -->
         <?php
-        if($id_name="fid"){
+        if(isset($_SESSION["fid"])){
             include 'fnavbar.php';
         }
-        elseif ($id_name="sid") {
+        if(isset($_SESSION["sid"])){
             include 'navbar.php';
         }
         ?>

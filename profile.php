@@ -45,10 +45,10 @@ and open the template in the editor.
     <body>
         <!-- Fixed navbar -->
         <?php
-        if($table="faculty"){
+        if(isset($_SESSION["fid"])){
             include 'fnavbar.php';
         }
-        elseif ($table="student_details") {
+        if(isset($_SESSION["sid"])){
             include 'navbar.php';
         }
         ?>

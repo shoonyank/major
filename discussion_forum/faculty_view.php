@@ -34,7 +34,16 @@ $totalpages=getpages();
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style type="text/css">
+  #form1, #form2, #form3, #form4, #form5{
+    visibility: hidden;
+  }
+  #form11, #form22, #form33, #form44, #form55{
+    visibility: hidden;
+  }
+  </style>
   <script type="text/javascript">
+
   	function fetchquestions(no,q){
   		var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -46,30 +55,50 @@ $totalpages=getpages();
                 else{
                 switch(no){
                 	case 0:
+                    document.getElementById("q1").value = q;
+                    document.getElementById("form1").style.visibility = "visible";
+                    document.getElementById("q11").value = q;
+                    document.getElementById("form11").style.visibility = "visible";
 	                	document.getElementById("prime_tag1").innerHTML = data.prime_tag;
                 		document.getElementById("question1").innerHTML = data.question;
                 		document.getElementById("timestamp1").innerHTML = data.timestamp;
                 		document.getElementById("postby1").innerHTML = data.posted_by;
                 	break;
                 	case 1:
+                    document.getElementById("q2").value = q;
+                    document.getElementById("form2").style.visibility = "visible";
+                    document.getElementById("q22").value = q;
+                    document.getElementById("form22").style.visibility = "visible";
 	                	document.getElementById("prime_tag2").innerHTML = data.prime_tag;
                 		document.getElementById("question2").innerHTML = data.question;
                 		document.getElementById("timestamp2").innerHTML = data.timestamp;
                 		document.getElementById("postby2").innerHTML = data.posted_by;
                 	break;
                 	case 2:
+                    document.getElementById("q3").value = q;
+                    document.getElementById("form3").style.visibility = "visible";
+                    document.getElementById("q33").value = q;
+                    document.getElementById("form33").style.visibility = "visible";
 	                	document.getElementById("prime_tag3").innerHTML = data.prime_tag;
                 		document.getElementById("question3").innerHTML = data.question;
                 		document.getElementById("timestamp3").innerHTML = data.timestamp;
                 		document.getElementById("postby3").innerHTML = data.posted_by;
                 	break;
                 	case 3:
+                    document.getElementById("q4").value = q;
+                    document.getElementById("form4").style.visibility = "visible";
+                    document.getElementById("q44").value = q;
+                    document.getElementById("form44").style.visibility = "visible";
 	                	document.getElementById("prime_tag4").innerHTML = data.prime_tag;
                 		document.getElementById("question4").innerHTML = data.question;
                 		document.getElementById("timestamp4").innerHTML = data.timestamp;
                 		document.getElementById("postby4").innerHTML = data.posted_by;
                 	break;
                 	case 4:
+                    document.getElementById("q5").value = q;
+                    document.getElementById("form5").style.visibility = "visible";
+                    document.getElementById("q55").value = q;
+                    document.getElementById("form55").style.visibility = "visible";
 	                	document.getElementById("prime_tag5").innerHTML = data.prime_tag;
                 		document.getElementById("question5").innerHTML = data.question;
                 		document.getElementById("timestamp5").innerHTML = data.timestamp;
@@ -108,7 +137,7 @@ $totalpages=getpages();
 <body onload="showquestion(1)">
         <!-- Fixed navbar -->
 <?php
-  include 'navbar.php';
+  include 'fnavbar.php';
 ?>
 <!--Navbar-->
 
@@ -134,7 +163,7 @@ $totalpages=getpages();
             <li><a href="#">Total Questions <span class="badge">
             <?php
         $total;
-        $query="Select count(qid) from questions where shown_to='student'";
+        $query="Select count(qid) from questions where shown_to='faculty'";
         $result = $con->query($query);
         if ($result->num_rows > 0) {    
             while($row = $result->fetch_assoc()) {
@@ -153,7 +182,19 @@ $totalpages=getpages();
   <div class="col-sm-9" id="main_content">
       <div class="panel-group">
   <div class="panel panel-default">
-    <div class="panel-body"><p id="question1"></p></div>
+    <div class="panel-body"><p id="question1"></p>
+      <form method="get" action="insert_answer.php" id="form1">
+      <input type="hidden" name="q" id="q1">
+      <input type="text" name="answer" placeholder="Your Answer">
+      <input type="Submit" name="submit">
+    </form>
+    <br>
+    <form method="get" action="show_answers.php" id="form11">
+      <input type="hidden" name="q" id="q11">
+      <input type="submit" name="submit" value="View All Answers" class="btn btn-primary">
+    </form>
+    <br>
+    </div>
   </div>
   <div class="panel panel-default">
     <div class="panel-body"><p id="prime_tag1"></p><p id="timestamp1"></p><p id="postby1"></p></div>
@@ -163,7 +204,18 @@ $totalpages=getpages();
 <div id="q2">
 <div class="panel-group">
   <div class="panel panel-default">
-    <div class="panel-body"><p id="question2"></p></div>
+    <div class="panel-body"><p id="question2"></p>
+      <form method="get" action="insert_answer.php" id="form2">
+      <input type="hidden" name="q" id="q2">
+      <input type="text" name="answer" placeholder="Your Answer">
+      <input type="Submit" name="submit">
+    </form>
+    <br>
+    <form method="get" action="show_answers.php" id="form22">
+      <input type="hidden" name="q" id="q22">
+      <input type="submit" name="submit" value="View All Answers" class="btn btn-primary">
+    </form>
+    </div>
   </div>
   <div class="panel panel-default">
     <div class="panel-body"><p id="prime_tag2"></p><p id="timestamp2"></p><p id="postby2"></p></div>
@@ -174,7 +226,18 @@ $totalpages=getpages();
 <div id="q3">
 <div class="panel-group">
   <div class="panel panel-default">
-    <div class="panel-body"><p id="question3"></p></div>
+    <div class="panel-body"><p id="question3"></p>
+      <form method="get" action="insert_answer.php" id="form3">
+      <input type="hidden" name="q" id="q3">
+      <input type="text" name="answer" placeholder="Your Answer">
+      <input type="Submit" name="submit">
+    </form>
+    <br>
+    <form method="get" action="show_answers.php" id="form33">
+      <input type="hidden" name="q" id="q33">
+      <input type="submit" name="submit" value="View All Answers" class="btn btn-primary">
+    </form>
+    </div>
   </div>
   <div class="panel panel-default">
     <div class="panel-body"><p id="prime_tag3"></p><p id="timestamp3"></p><p id="postby3"></p></div>
@@ -185,7 +248,18 @@ $totalpages=getpages();
 <div id="q4">
 <div class="panel-group">
   <div class="panel panel-default">
-    <div class="panel-body"><p id="question4"></p></div>
+    <div class="panel-body"><p id="question4"></p>
+      <form method="get" action="insert_answer.php" id="form4">
+      <input type="hidden" name="q" id="q4">
+      <input type="text" name="answer" placeholder="Your Answer">
+      <input type="Submit" name="submit">
+    </form>
+    <br>
+    <form method="get" action="show_answers.php" id="form44">
+      <input type="hidden" name="q" id="q44">
+      <input type="submit" name="submit" value="View All Answers" class="btn btn-primary">
+    </form>
+    </div>
   </div>
   <div class="panel panel-default">
     <div class="panel-body"><p id="prime_tag4"></p><p id="timestamp4"></p><p id="postby4"></p></div>
@@ -196,7 +270,18 @@ $totalpages=getpages();
 <div id="q5">
 <div class="panel-group">
   <div class="panel panel-default">
-    <div class="panel-body"><p id="question5"></p></div>
+    <div class="panel-body"><p id="question5"></p>
+      <form method="get" action="insert_answer.php" id="form5">
+      <input type="hidden" name="q" id="q5">
+      <input type="text" name="answer" placeholder="Your Answer">
+      <input type="Submit" name="submit">
+    </form>
+    <br>
+    <form method="get" action="show_answers.php" id="form55">
+      <input type="hidden" name="q" id="q55">
+      <input type="submit" name="submit" value="View All Answers" class="btn btn-primary">
+    </form>
+    </div>
   </div>
   <div class="panel panel-default">
     <div class="panel-body"><p id="prime_tag5"></p><p id="timestamp5"></p><p id="postby5"></p></div>
