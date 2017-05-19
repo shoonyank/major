@@ -20,9 +20,8 @@
           <ul class="dropdown-menu">
           	<li><a href="submit_assignment.php" style="color: black;">Post New Assignment</a></li>
             <li><a href="#" style="color: black;">NoticeBoard</a></li>
-            <li role="separator" class="divider"></li>
-            <li class="dropdown-header" style="color: black;">Prepare Mock Tests</li>
-            <li><a href="#" style="color: black;">Create Mock test</a></li>
+            <li><a href="./exam/create_exam.php" style="color: black;">Create Exam</a></li>
+            <li><a href="#" style="color: black;">Upload Mock test</a></li>
             <li><a href="#" style="color: black;">See Results</a></li>
           </ul>
         </li>

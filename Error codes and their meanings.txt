@@ -19,3 +19,6 @@ Error code starts with # like #code and its meaning is right next to it in /* Me
 
 #5990
 //Error in show_answers.php
+
+#6697
+//Error in insertquestion.php
