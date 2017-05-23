@@ -22,3 +22,6 @@ Error code starts with # like #code and its meaning is right next to it in /* Me
 
 #6697
 //Error in insertquestion.php
+
+#1122
+//Error in savescore.php

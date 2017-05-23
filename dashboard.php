@@ -28,5 +28,80 @@ and open the template in the editor.
         <?php
         include './navbar.php';
         ?>
+
+        <div class="container" style="margin-top: 5%;">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <!--Recent exam details-->
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                            <h3>Your Exam Performance</h3>
+                                <?php
+                                    $query="Select * from ans_table where timestamp=(Select max(timestamp) from ans_table where sid=".$_SESSION["sid"].") ";
+                                    $result=$con->query($query);
+                                    if ($result->num_rows > 0) {
+                                        while($row = $result->fetch_assoc()) {
+                                            echo "You recently scored :<b>" . $row["score"]. "</b> in test: <b>" . $row["test_name"]. "</b><br>";
+                                        }
+                                    } else {
+                                        echo "No recent exams given";
+                                    }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--Recent details about what you answered in forum-->
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                            <h3>Your Forum Interaction</h3>
+                                <?php
+                                    $forumquery="Select * from forum_answers where timestamp=(Select max(timestamp) from forum_answers where resolver_id=".$_SESSION["sid"]." and id_of='student') ";
+                                    $forumresult=$con->query($forumquery);
+                                    if ($forumresult->num_rows > 0) {
+                                        while($frow = $forumresult->fetch_assoc()) {
+                                            echo "You answered :<b>" . $frow["answer"]. "</b> ;recently,to a question in the forum.<br>";
+                                        }
+                                    } else {
+                                        echo "You have not answered any questions in the forum.";
+                                    }  
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--Recent details about submitted assignments-->
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                            <h3>Your Submitted Assignments</h3>
+                                <?php
+                                    $submitquery="Select * from posted_assignments where a_id=(Select a_id from submitted_assignments where time_stamp=(Select max(time_stamp) from submitted_assignments where sid=".$_SESSION["sid"].")) ";
+                                    $submitresult=$con->query($submitquery);
+                                    if ($submitresult->num_rows > 0) {
+                                        while($srow = $submitresult->fetch_assoc()) {
+                                            echo "You recently submitted an assignment for :<b>" . $srow["a_name"]."</b><br>";
+                                        }
+                                    } else {
+                                        echo "You have not submitted any assignments.";
+                                        echo $_SESSION["sid"];
+                                    }
+                                     $profile_of='Student'
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <img src="<?php include './profile/get_dp.php';?>" style="width: 63%; margin-left: 30%;">
+                </div>
+            </div>
+        </div>
+        
+
+        
+
+        
+
     </body>
 </html>
