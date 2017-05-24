@@ -38,7 +38,7 @@ and open the template in the editor.
                             <div class="panel-body">
                             <h3>Your Exam Performance</h3>
                                 <?php
-                                    $query="Select * from ans_table where timestamp=(Select max(timestamp) from ans_table where sid=".$_SESSION["sid"].") ";
+                                    $query="Select * from ans_table where time_stamp=(Select max(time_stamp) from ans_table where sid=".$_SESSION["sid"].") ";
                                     $result=$con->query($query);
                                     if ($result->num_rows > 0) {
                                         while($row = $result->fetch_assoc()) {
@@ -84,9 +84,8 @@ and open the template in the editor.
                                         }
                                     } else {
                                         echo "You have not submitted any assignments.";
-                                        echo $_SESSION["sid"];
                                     }
-                                     $profile_of='Student'
+                                     $profile_of='Student';
                                 ?>
                             </div>
                         </div>
@@ -97,11 +96,5 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
-        
-
-        
-
-        
-
     </body>
 </html>

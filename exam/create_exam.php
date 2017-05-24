@@ -29,6 +29,9 @@ and open the template in the editor.
             #option1,#option2,#option3,#option4{
                 visibility: hidden;
             }
+            #finish{
+                visibility:hidden;
+            }
         </style>
         <script type="text/javascript">
             function addop1(){
@@ -61,6 +64,7 @@ and open the template in the editor.
             function submittestname(){
                 var testname=document.getElementById('tname').value;
                 document.getElementById("testname").value=testname;
+                document.getElementById("finish").style.visibility="visible";
                 document.getElementById("examname").style.visibility="hidden";
                 document.getElementById("question").style.visibility="visible";
                 document.getElementById("curr_test").innerHTML=testname;
@@ -124,7 +128,7 @@ and open the template in the editor.
                 <button class="btn btn-success" onclick="submitquestion()">Submit</button><br>
                 <p id="response"></p>
             </div><br>
-            <button class="btn btn-primary" onclick="home()">Finish</button>
+            <button id="finish" class="btn btn-primary" onclick="home()">Finish</button>
         </div>
     </body>
 </html>

@@ -21,8 +21,8 @@
           	<li><a href="../submit_assignment.php" style="color: black;">Submit Assignments</a></li>
             <li><a href="#" style="color: black;">NoticeBoard</a></li>
             <li><a href="../exam/give_exam.php" style="color: black;">Give Exam</a></li>
-            <li><a href="#" style="color: black;">Get Mock test</a></li>
-            <li><a href="#" style="color: black;">Get Results</a></li>
+            <li><a href="../material.php" style="color: black;">Get Study Material</a></li>
+            <li><a href="../results/see_your_result.php" style="color: black;">Get Results</a></li>
           </ul>
         </li>
         <li><a href="../database/logout.php" style="color: white;">Logout</a></li>
