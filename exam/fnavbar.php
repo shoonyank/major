@@ -19,7 +19,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: white;">Academics<span class="caret"></span></a>
           <ul class="dropdown-menu">
           	<li><a href="../submit_assignment.php" style="color: black;">Post New Assignment</a></li>
-            <li><a href="#" style="color: black;">NoticeBoard</a></li>
+            <li><a href="../noticeboard.php" style="color: black;">NoticeBoard</a></li>
             <li><a href="create_exam.php" style="color: black;">Create Exam</a></li>
             <li><a href="../material.php" style="color: black;">Upload Study Material</a></li>
             <li><a href="../results/see_student_results.php" style="color: black;">See Results of Students</a></li>
