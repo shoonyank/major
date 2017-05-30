@@ -25,39 +25,76 @@ and open the template in the editor.
     </head>
     <body>
         <!-- Fixed navbar -->
-<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #335571;">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#" style="color: white;">WebCods</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="dashboard.php">Home</a></li>
-        <li><a href="profile.php" style="color: white;">Profile</a></li>
-        <li><a href="./discussion_forum/student_view.php" style="color: white;">Test Forum</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: white;">Academics<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-          	<li><a href="submit_assignments.php" style="color: black;">Submit Assignments</a></li>
-            <li><a href="noticeboard.php" style="color: black;">NoticeBoard</a></li>
-            <li role="separator" class="divider"></li>
-            <li class="dropdown-header" style="color: black;">Give Mock Tests</li>
-            <li><a href="mock_test.php" style="color: black;">Do a Mock test</a></li>
-            <li><a href="get_results.php" style="color: black;">Get Results</a></li>
-          </ul>
-        </li>
-        <li><a href="database/logout.php" style="color: white;">Logout</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+        <?php
+        include './navbar.php';
+        ?>
 
-
+        <div class="container" style="margin-top: 5%;">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <!--Recent exam details-->
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                            <h3>Exams</h3>
+                                <?php
+                                    $query="Select * from ans_table where time_stamp=(Select max(time_stamp) from ans_table where sid=".$_SESSION["sid"].") ";
+                                    $result=$con->query($query);
+                                    if ($result->num_rows > 0) {
+                                        while($row = $result->fetch_assoc()) {
+                                            echo "You recently scored :<b>" . $row["score"]. "</b> in test: <b>" . $row["test_name"]. "</b><br>";
+                                        }
+                                    } else {
+                                        echo "No recent exams given";
+                                    }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--Recent details about what you answered in forum-->
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                            <h3>Forum Interactions</h3>
+                                <?php
+                                    $forumquery="Select * from forum_answers where timestamp=(Select max(timestamp) from forum_answers where resolver_id=".$_SESSION["sid"]." and id_of='student') ";
+                                    $forumresult=$con->query($forumquery);
+                                    if ($forumresult->num_rows > 0) {
+                                        while($frow = $forumresult->fetch_assoc()) {
+                                            echo "You answered :<b>" . $frow["answer"]. "</b> ;recently,to a question in the forum.<br>";
+                                        }
+                                    } else {
+                                        echo "You have not answered any questions in the forum.";
+                                    }  
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--Recent details about submitted assignments-->
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                            <h3>Assignments</h3>
+                                <?php
+                                    $submitquery="Select * from posted_assignments where a_id=(Select a_id from submitted_assignments where time_stamp=(Select max(time_stamp) from submitted_assignments where sid=".$_SESSION["sid"].")) ";
+                                    $submitresult=$con->query($submitquery);
+                                    if ($submitresult->num_rows > 0) {
+                                        while($srow = $submitresult->fetch_assoc()) {
+                                            echo "You recently submitted an assignment for :<b>" . $srow["a_name"]."</b><br>";
+                                        }
+                                    } else {
+                                        echo "You have not submitted any assignments.";
+                                    }
+                                     $profile_of='Student';
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <img src="<?php include './profile/get_dp.php';?>" style="width: 63%; margin-left: 30%;">
+                </div>
+            </div>
+        </div>
     </body>
 </html>
