@@ -36,7 +36,7 @@ and open the template in the editor.
                         <!--Recent exam details-->
                         <div class="panel panel-default">
                             <div class="panel-body">
-                            <h3>Your Exam Performance</h3>
+                            <h3>Exams</h3>
                                 <?php
                                     $query="Select * from test where timestamp=(Select max(timestamp) from test where fid=".$_SESSION["fid"].") ";
                                     $result=$con->query($query);
@@ -55,7 +55,7 @@ and open the template in the editor.
                         <!--Recent details about what you answered in forum-->
                         <div class="panel panel-default">
                             <div class="panel-body">
-                            <h3>Your Forum Interaction</h3>
+                            <h3>Forum Interactions</h3>
                                 <?php
                                     $forumquery="Select * from questions where timestamp=(Select max(timestamp) from questions where posted_by_id=".$_SESSION["fid"]." and id_of='faculty') ";
                                     $forumresult=$con->query($forumquery);
@@ -83,7 +83,7 @@ and open the template in the editor.
                         <!--Recent details about submitted assignments-->
                         <div class="panel panel-default">
                             <div class="panel-body">
-                            <h3>Your Submitted Assignments</h3>
+                            <h3>Assignments</h3>
                                 <?php
                                     $submitquery="Select * from posted_assignments where timestamp=(Select max(timestamp) from posted_assignments where fid=".$_SESSION["fid"].") ";
                                     $submitresult=$con->query($submitquery);
@@ -105,7 +105,5 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
-
-
     </body>
 </html>

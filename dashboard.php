@@ -36,7 +36,7 @@ and open the template in the editor.
                         <!--Recent exam details-->
                         <div class="panel panel-default">
                             <div class="panel-body">
-                            <h3>Your Exam Performance</h3>
+                            <h3>Exams</h3>
                                 <?php
                                     $query="Select * from ans_table where time_stamp=(Select max(time_stamp) from ans_table where sid=".$_SESSION["sid"].") ";
                                     $result=$con->query($query);
@@ -55,7 +55,7 @@ and open the template in the editor.
                         <!--Recent details about what you answered in forum-->
                         <div class="panel panel-default">
                             <div class="panel-body">
-                            <h3>Your Forum Interaction</h3>
+                            <h3>Forum Interactions</h3>
                                 <?php
                                     $forumquery="Select * from forum_answers where timestamp=(Select max(timestamp) from forum_answers where resolver_id=".$_SESSION["sid"]." and id_of='student') ";
                                     $forumresult=$con->query($forumquery);
@@ -74,7 +74,7 @@ and open the template in the editor.
                         <!--Recent details about submitted assignments-->
                         <div class="panel panel-default">
                             <div class="panel-body">
-                            <h3>Your Submitted Assignments</h3>
+                            <h3>Assignments</h3>
                                 <?php
                                     $submitquery="Select * from posted_assignments where a_id=(Select a_id from submitted_assignments where time_stamp=(Select max(time_stamp) from submitted_assignments where sid=".$_SESSION["sid"].")) ";
                                     $submitresult=$con->query($submitquery);

@@ -114,7 +114,7 @@ function checkusername() {
 <br>
 <br>
 <!--Registration Form-->
-<form class="form-inline" action="./database/register.php" id="registrationform" style="float: right;margin-right: 12%;" onsubmit="return check()" method="post">
+<form class="form-inline" action="./database/register2.php" id="registrationform" style="float: right;margin-right: 12%;" onsubmit="return check()" method="post">
 	<input type="text" id="reginput0" onchange="checkusername()" name="name" class="form-control" placeholder="Name" required=""><br><br>
 	<input id="username" type="text" name="username" class="form-control" onkeyup="checkusername()" placeholder="UserName" required=""><br><br><div id="usernameAvail"></div>
 	<input type="tel" name="number" onchange="checkusername()" onkeyup="checkPhone()" class="form-control" placeholder="Phone Number" pattern=".{10,}" required="" title="Enter a valid contact number including area code" id="reginput1"><br><br>
